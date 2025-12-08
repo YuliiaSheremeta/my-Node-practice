@@ -4,8 +4,10 @@ import cors from 'cors';
 import notFoundHandler from './middleware/notFoundHandler.js';
 import errorHandler from './middleware/errorHandler.js';
 import booksRoutes from './routes/booksRoutes.js';
+import authRoutes from './routes/authRoutes.js';
 import connectMongoDB from './db/connectMongoDB.js';
 import { errors } from 'celebrate';
+import cookieParser from 'cookie-parser';
 
 const app = express();
 const PORT = 3000;
@@ -13,7 +15,9 @@ const PORT = 3000;
 app.use(logger);
 app.use(express.json());
 app.use(cors());
+app.use(cookieParser());
 
+app.use(authRoutes);
 app.use(booksRoutes);
 
 app.use(notFoundHandler);
