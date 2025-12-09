@@ -56,3 +56,17 @@ export const loginUser = async (req, res, next) => {
 
   res.status(200).json(user);
 };
+export const logoutUser = async (req, res) => {
+  const { sessionId } = req.cookies;
+  //видаляємо сесію якщо існує
+  if (sessionId) {
+    await Session.deleteOne({ _id: sessionId });
+  }
+  //видаляємо всі куки
+  res.clearCookie('sesionId');
+  res.clearCookie('accessToken');
+  res.clearCookie('refreshToken');
+
+  //поверта\мо статус 204 No Content
+  res.status(204).send();
+};
