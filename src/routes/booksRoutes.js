@@ -1,15 +1,28 @@
-import { Router } from "express";
-import { createNewBook, deleteBook, getBooks,getBooksById, updateBook } from "../controllers/booksController.js";
-import { celebrate } from "celebrate";
-import { bookIdParamSchema, createBookSchema, getBooksSchema, updateBookSchema } from "../validation/bookValidation.js";
+import { Router } from 'express';
+import {
+  createNewBook,
+  deleteBook,
+  getBooks,
+  getBooksById,
+  updateBook,
+} from '../controllers/booksController.js';
+import { celebrate } from 'celebrate';
+import {
+  bookIdParamSchema,
+  createBookSchema,
+  getBooksSchema,
+  updateBookSchema,
+} from '../validation/bookValidation.js';
+import { authenticate } from '../middleware/authenticate.js';
 
 const router = Router();
+router.use('/books', authenticate);
 
-router.get('/books', celebrate(getBooksSchema),getBooks);
+router.get('/books', celebrate(getBooksSchema), getBooks);
 
-router.get('/books/:bookId',celebrate(bookIdParamSchema),getBooksById);
-router.post('/books', celebrate(createBookSchema),createNewBook);
-router.delete('/books/:bookId',celebrate(bookIdParamSchema),deleteBook);
-router.patch('/books/:bookId',celebrate(updateBookSchema),updateBook);
+router.get('/books/:bookId', celebrate(bookIdParamSchema), getBooksById);
+router.post('/books', celebrate(createBookSchema), createNewBook);
+router.delete('/books/:bookId', celebrate(bookIdParamSchema), deleteBook);
+router.patch('/books/:bookId', celebrate(updateBookSchema), updateBook);
 
 export default router;
